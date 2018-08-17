@@ -110,7 +110,9 @@
 
 				<div class="inputitem">
 					<input class="product custom_product" type="checkbox" id="include_sr" name="sr"></input>
-					<label class="tooltip" title="Surface Reflectance" for="surface_reflectance">Surface Reflectance</label>
+					<label class="tooltip" title="Surface Reflectance - Not available for thermal or panchromatic bands" for="surface_reflectance">
+						Surface Reflectance - <em>Not available for thermal or panchromatic bands</em>
+					</label>
 				</div>
 
 				{% if session['user'].is_staff %}
@@ -127,7 +129,9 @@
 
 				<div class="inputitem">
 					<input class="product custom_product" type="checkbox" id="include_sr_thermal" name="bt"></input>
-					<label class="tooltip" title="Top of Atmosphere Brightness Temperature" for="sr_thermal">Brightness Temperature</label>
+					<label class="tooltip" title="Top of Atmosphere Brightness Temperature - Thermal band TOA processing" for="sr_thermal">
+						Brightness Temperature - <em>Thermal band TOA processing</em>
+					</label>
 				</div>
 
 				<div class="inputitem">
