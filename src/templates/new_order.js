@@ -249,8 +249,8 @@ $(document).ready(function(){
             $(st_div).show();
             $("#stalg_single_channel").prop('checked', true);
             $("#reanal_select").show();
-            $('[name="reanalysis_src"]').prop('disabled', false);
             $("#reanalsrc_narr").prop('checked', true);
+            $(".reanal_src").prop('disabled', false);
         } else {
             $(st_div).hide();
             $(".st_product").prop('checked', false);
@@ -261,23 +261,56 @@ $(document).ready(function(){
        if ( $(this).is(":checked") ) {
          $("#stalg_split_window").prop('checked', false);
          $("#reanal_select").show();
-         $('[name="reanalysis_src"]').prop('disabled', false);
          $("#reanalsrc_narr").prop('checked', true);
+         $(".reanal_src").prop('disabled', false);
      } else {
          $(st).prop('checked', false);
-         $('[name="reanalysis_src"]').prop('checked', false);
+         $('.reanal_src').prop('checked', false);
+         $(st_div).hide();
        }
    });
 
    $("#stalg_split_window").change(function(item) {
        if ( $(this).is(":checked") ) {
          $("#stalg_single_channel").prop('checked', false);
-         $('[name="reanalysis_src"]').prop('checked', false);
-         $('[name="reanalysis_src"]').prop('disabled', true);         
+         $(".reanal_src").prop('checked', false);
+         $(".reanal_src").prop('disabled', true);
        } else {
            $(st).prop('checked', false);
        } 
    });
+
+  $("#reanalsrc_narr").change(function(item) {
+    if ( $(this).is(":checked") ) {
+      $('#reanalsrc_merra2').prop('checked', false);
+      $('#reanalsrc_fp').prop('checked', false);
+      $('#reanalsrc_fpit').prop('checked', false);
+    }
+  });
+
+  $("#reanalsrc_merra2").change(function(item) {
+    if ( $(this).is(":checked") ) {
+      $('#reanalsrc_narr').prop('checked', false);
+      $('#reanalsrc_fp').prop('checked', false);
+      $('#reanalsrc_fpit').prop('checked', false);
+    }
+  });
+
+  $("#reanalsrc_fp").change(function(item) {
+    if ( $(this).is(":checked") ) {
+      $('#reanalsrc_narr').prop('checked', false);
+      $('#reanalsrc_merra2').prop('checked', false);
+      $('#reanalsrc_fpit').prop('checked', false);
+    }
+  });
+
+  $("#reanalsrc_fpit").change(function(item) {
+    if ( $(this).is(":checked") ) {
+      $('#reanalsrc_narr').prop('checked', false);
+      $('#reanalsrc_fp').prop('checked', false);
+      $('#reanalsrc_merra2').prop('checked', false);
+    }
+  });
 
   
 

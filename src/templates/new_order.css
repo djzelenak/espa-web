@@ -153,3 +153,7 @@ input.bounding_box_params {
 .image_extents_units_wrapper {
     width:400px;
 }
+
+.reanal_label {
+    padding-right:30px;
+}
