@@ -28,6 +28,9 @@ var reproject_div = "#reprojection";
 var indices = "#indices";
 var indices_div = "#indices_select";
 
+var st = "#include_st";
+var st_div = "#st_select";
+
 var resize = "#resize";
 var resize_option_div = "#resize_options";
 
@@ -237,6 +240,46 @@ $(document).ready(function(){
             $(".indice_product").prop('checked', false);
         }
    });
+
+   /*******************************************************************
+       Event handler to deal with surface temperature selection
+   *******************************************************************/
+   $(st).change(function(item) {
+        if ( $(this).is(":checked") ) {
+            $(st_div).show();
+            $("#stalg_single_channel").prop('checked', true);
+            $("#reanal_select").show();
+            $('[name="reanalysis_src"]').prop('disabled', false);
+            $("#reanalsrc_narr").prop('checked', true);
+        } else {
+            $(st_div).hide();
+            $(".st_product").prop('checked', false);
+        }
+   });
+
+   $("#stalg_single_channel").change(function(item) {
+       if ( $(this).is(":checked") ) {
+         $("#stalg_split_window").prop('checked', false);
+         $("#reanal_select").show();
+         $('[name="reanalysis_src"]').prop('disabled', false);
+         $("#reanalsrc_narr").prop('checked', true);
+     } else {
+         $(st).prop('checked', false);
+         $('[name="reanalysis_src"]').prop('checked', false);
+       }
+   });
+
+   $("#stalg_split_window").change(function(item) {
+       if ( $(this).is(":checked") ) {
+         $("#stalg_single_channel").prop('checked', false);
+         $('[name="reanalysis_src"]').prop('checked', false);
+         $('[name="reanalysis_src"]').prop('disabled', true);         
+       } else {
+           $(st).prop('checked', false);
+       } 
+   });
+
+  
 
    /*******************************************************************
       Initial value population for pixelsize units (meters or dd)

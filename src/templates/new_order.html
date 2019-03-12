@@ -116,10 +116,35 @@
 				</div>
 
 				{% if session['user'].is_staff %}
-					<div class="inputitem">
-						<input class="product custom_product" type="checkbox" id="include_st" name="st"></input>
-						<label class="tooltip" title="Surface Temperature" for="include_st">Surface Temperature</label>
-					</div>
+				        <div class="inputitem">
+					  <input type="checkbox" id="include_st" class="product" name="st">
+					  <label class="tooltip" title="Select surface temperature options" for="st">Surface Temperature</label>
+					  <div class="custom_control_options" id="st_select">
+
+					    <input class="product custom_product st_product" type="checkbox" id="stalg_single_channel" name="st_single_channel"></input>
+					    <label class="tooltip" title="ST Algorithm Single Channel" for="stalg_single_channel">Single Channel</label></br>
+
+                                            <div class="custom_control_options" id="reanal_select">
+                                              <input type="radio" id="reanalsrc_narr" name="reanalysis_src" value="reanalsrc_narr" class="st_product">
+                                              <label for="reanalsrc_narr">NARR</label>
+
+                                              <input type="radio" id="reanalsrc_merra2" name="reanalysis_src" value="reanalsrc_merra2" class="st_product">
+                                              <label for="reanalsrc_merra2">MERRA-2</label>
+
+                                              <input type="radio" id="reanalsrc_fp" name="reanalysis_src" value="reanalsrc_fp" class="st_product">
+                                              <label for="reanalsrc_fp">FP</label>
+
+                                              <input type="radio" id="reanalsrc_fpit" name="reanalysis_src" value="reanalsrc_fpit" class="st_product">
+                                              <label for="reanalsrc_fpit">FPIT</label>
+
+                                            </div>
+
+					    <input class="product custom_product st_product" type="checkbox" id="stalg_split_window" name="st_split_window"></input>
+					    <label class="tooltip" title="ST Algorithm Split Window" for="stalg_split_window">Split Window</label></br>
+
+					  </div>
+				        </div>
+
 				{% endif %}
 						
 				<div class="inputitem">
