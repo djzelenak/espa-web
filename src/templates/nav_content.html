@@ -1,8 +1,8 @@
 <span class="navitemleft"><a href="index">Home</a></span>
 <span class="navitemleft">|</span>
-<span class="navitemleft"><a href="https://landsat.usgs.gov/landsat-science-data-products">Product Information</a></span>
+<span class="navitemleft"><a href="https://usgs.gov/land-resources/nli/landsat/landsat-science-products" target="_blank">Product Information</a></span>
 <span class="navitemleft">|</span>
-<span class="navitemleft"><a href="https://landsat.usgs.gov/sites/default/files/documents/espa_odi_userguide.pdf">User Guide</a></span>
+<span class="navitemleft"><a href="https://usgs.gov/media/files/eros-science-processing-architecture-demand-interface-user-guide" target="_blank">User Guide</a></span>
 {% if 'logged_in' in session.keys() and session['logged_in'] %}
 <span class="navitemleft">|</span>
 <span class="navitemleft"><a href="ordering/new">New Order</a></span>
@@ -15,7 +15,7 @@
     <span class="navitemright"><a href="{{ session['EROS_REGISTRATION_SYSTEM'] }}/login">Login</a></span>
 {% endif %}
 <span class="navitemright">|</span>
-<span class="navitemright"><a href="https://landsat.usgs.gov/landsat-science-data-products-news-archive">Data Product News</a></span>
+<span class="navitemright"><a href="https://usgs.gov/land-resources/nli/landsat/landsat-science-products-news-archive" target="_blank">Data Product News</a></span>
 {% if 'logged_in' in session.keys() and session['logged_in'] %}
     {% if session['user'].is_staff %}
         <span class="navitemright">|</span>
