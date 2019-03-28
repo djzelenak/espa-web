@@ -28,6 +28,9 @@ var reproject_div = "#reprojection";
 var indices = "#indices";
 var indices_div = "#indices_select";
 
+var st = "#include_st";
+var st_div = "#st_select";
+
 var resize = "#resize";
 var resize_option_div = "#resize_options";
 
@@ -237,6 +240,79 @@ $(document).ready(function(){
             $(".indice_product").prop('checked', false);
         }
    });
+
+   /*******************************************************************
+       Event handler to deal with surface temperature selection
+   *******************************************************************/
+   $(st).change(function(item) {
+        if ( $(this).is(":checked") ) {
+            $(st_div).show();
+            $("#stalg_single_channel").prop('checked', true);
+            $("#reanal_select").show();
+            $("#reanalsrc_narr").prop('checked', true);
+            $(".reanal_src").prop('disabled', false);
+        } else {
+            $(st_div).hide();
+            $(".st_product").prop('checked', false);
+        }
+   });
+
+   $("#stalg_single_channel").change(function(item) {
+       if ( $(this).is(":checked") ) {
+         $("#stalg_split_window").prop('checked', false);
+         $("#reanal_select").show();
+         $("#reanalsrc_narr").prop('checked', true);
+         $(".reanal_src").prop('disabled', false);
+     } else {
+         $(st).prop('checked', false);
+         $('.reanal_src').prop('checked', false);
+         $(st_div).hide();
+       }
+   });
+
+   $("#stalg_split_window").change(function(item) {
+       if ( $(this).is(":checked") ) {
+         $("#stalg_single_channel").prop('checked', false);
+         $(".reanal_src").prop('checked', false);
+         $(".reanal_src").prop('disabled', true);
+       } else {
+           $(st).prop('checked', false);
+       } 
+   });
+
+  $("#reanalsrc_narr").change(function(item) {
+    if ( $(this).is(":checked") ) {
+      $('#reanalsrc_merra2').prop('checked', false);
+      $('#reanalsrc_fp').prop('checked', false);
+      $('#reanalsrc_fpit').prop('checked', false);
+    }
+  });
+
+  $("#reanalsrc_merra2").change(function(item) {
+    if ( $(this).is(":checked") ) {
+      $('#reanalsrc_narr').prop('checked', false);
+      $('#reanalsrc_fp').prop('checked', false);
+      $('#reanalsrc_fpit').prop('checked', false);
+    }
+  });
+
+  $("#reanalsrc_fp").change(function(item) {
+    if ( $(this).is(":checked") ) {
+      $('#reanalsrc_narr').prop('checked', false);
+      $('#reanalsrc_merra2').prop('checked', false);
+      $('#reanalsrc_fpit').prop('checked', false);
+    }
+  });
+
+  $("#reanalsrc_fpit").change(function(item) {
+    if ( $(this).is(":checked") ) {
+      $('#reanalsrc_narr').prop('checked', false);
+      $('#reanalsrc_fp').prop('checked', false);
+      $('#reanalsrc_merra2').prop('checked', false);
+    }
+  });
+
+  
 
    /*******************************************************************
       Initial value population for pixelsize units (meters or dd)

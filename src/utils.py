@@ -104,6 +104,12 @@ conversions = {
          'bt': 'brightness temperature',
          'toa': 'top of atmosphere',
          'stats': 'plots and statistics',
-         'sr_ndvi': 'sr_ndvi'
+         'sr_ndvi': 'sr_ndvi',
+         'stalg_split_window': 'Split Window ST',
+         'stalg_single_channel': 'Single Channel ST',
+         'reanalsrc_narr': 'Reanalysis Source NARR',
+         'reanalsrc_merra2': 'Reanalysis Source MERRA2',
+         'reanalsrc_fp': 'Reanalysis Source FP',
+         'reanalsrc_fpit': 'Reanalysis Source FPIT'
     }
 }

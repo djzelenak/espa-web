@@ -116,10 +116,31 @@
 				</div>
 
 				{% if session['user'].is_staff %}
-					<div class="inputitem">
-						<input class="product custom_product" type="checkbox" id="include_st" name="st"></input>
-						<label class="tooltip" title="Surface Temperature" for="include_st">Surface Temperature</label>
-					</div>
+				        <div class="inputitem">
+					  <input type="checkbox" id="include_st" class="product" name="st">
+					  <label class="tooltip" title="Select surface temperature options" for="st">Surface Temperature</label>
+					  <div class="custom_control_options" id="st_select">
+
+					    <input class="product custom_product st_product" type="checkbox" id="stalg_single_channel" name="stalg_single_channel" value="true"></input>
+					    <label class="tooltip" title="ST Algorithm Single Channel" for="stalg_single_channel">Single Channel</label></br>
+
+                                            <div class="custom_control_options st_product" id="reanal_select">
+                                              <input class="product custom_product st_product reanal_src" type="checkbox" id="reanalsrc_narr" name="reanalsrc_narr" value="true"></input>
+                                              <label class="tooltip reanal_label" title="Reanalysis Source NARR" for="reanalsrc_narr">NARR</label>                                              
+                                              <input class="product custom_product st_product reanal_src" type="checkbox" id="reanalsrc_merra2" name="reanalsrc_merra2" value="true"></input>
+                                              <label class="tooltip reanal_label" title="Reanalysis Source MERRA-2" for="reanalsrc_merra2">MERRA-2</label>
+                                              <input class="product custom_product st_product reanal_src" type="checkbox" id="reanalsrc_fp" name="reanalsrc_fp" value="true"></input>
+                                              <label class="tooltip reanal_label" title="Reanalysis Source FP" for="reanalsrc_FP">FP</label>
+                                              <input class="product custom_product st_product reanal_src" type="checkbox" id="reanalsrc_fpit" name="reanalsrc_fpit" value="true"></input>
+                                              <label class="tooltip reanal_label" title="Reanalysis Source FPIT" for="reanalsrc_fpit">FPIT</label>
+                                            </div>
+
+					    <input class="product custom_product st_product" type="checkbox" id="stalg_split_window" name="stalg_split_window"></input>
+					    <label class="tooltip" title="ST Algorithm Split Window" for="stalg_split_window">Split Window</label></br>
+
+					  </div>
+				        </div>
+
 				{% endif %}
 						
 				<div class="inputitem">
