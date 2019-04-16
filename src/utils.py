@@ -110,6 +110,8 @@ conversions = {
          'reanalsrc_narr': 'Reanalysis Source NARR',
          'reanalsrc_merra2': 'Reanalysis Source MERRA2',
          'reanalsrc_fp': 'Reanalysis Source FP',
-         'reanalsrc_fpit': 'Reanalysis Source FPIT'
+         'reanalsrc_fpit': 'Reanalysis Source FPIT',
+         'mod_ndvi': 'Surface Reflectance NDVI',
+         'vnp_ndvi': 'Surface Reflectance NDVI'
     }
 }

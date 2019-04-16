@@ -20,14 +20,17 @@
 				<th>&nbsp;</th>
 				<th>Landsat TM, ETM+, OLI/TIRS</th>
 				<th>MODIS Aqua & Terra</th>
+				<th>S-NPP VIIRS</th>
 			</tr>
 			<tr>
 				<th>&nbsp;</th>
 				<th>(Collection 1)</th>
-				<th>09A1/GA/GQ/Q1<br>13Q1/A1/A2/A3<br>11A1<br>(Collections 5-6)</th>
+				<th>09A1/GA/GQ/Q1<br>13Q1/A1/A2/A3<br>11A1<br>(Collection 6)</th>
+				<th>09GA<br>(Collection 1)</th>
 			</tr>
 			<tr>
 				<td>Input Products</td>
+				<td>X</td>
 				<td>X</td>
 				<td>X</td>
 			</tr>
@@ -35,24 +38,29 @@
 				<td>Input Product Metadata</td>
 				<td>X</td>
 				<td>&nbsp;</td>
+				<td>&nbsp;</td>
 			</tr>
 			<tr>
 				<td>Level-2 Products</td>
 				<td>X</td>
 				<td>&nbsp;</td>
+				<td>&nbsp;</td>
 			</tr>
 			<tr>
 				<td>Spectral Indices</td>
 				<td>X</td>
-				<td>&nbsp;</td>
+				<td>X (09GA only)</td>
+				<td>X (09GA only)</td>
 			</tr>
 			<tr>
 				<td>Customized Outputs</td>
 				<td>X</td>
 				<td>X</td>
+				<td>X</td>
 			</tr>
 			<tr>
 				<td>Intercomparison & Statistics</td>
+				<td>X</td>
 				<td>X</td>
 				<td>X</td>
 			</tr>
@@ -190,24 +198,29 @@
 			<div class="product_boxbody">
 			<div class="inputitem">
 					<input class="product custom_product" type="checkbox" id="include_dswe" name="swe"></input>
-				<label class="tooltip" title="Dynamic Surface Water Extent" for="include_dwse">Dynamic Surface Water Extent</label>
+				<label class="tooltip" title="Dynamic Surface Water Extent" for="include_dwse">Dynamic Surface Water Extent</label></br>
 				</div>
 			</div>
 		</div>
 		{% endif %}
 
-	    <h4 class="inlineb new_order_section_label">Customize MODIS/VIIRS (MOD09GA, MYD09GA, VNP09GA only)</h4>
-	    	<div class="product_box">
+                <h4 class="inlineb new_order_section_label">Additional MODIS/VIIRS Processing</h4>
+
+		<div class="product_box">
 				<div class="product_boxheader">
-				MODIS/VIIRS Daily NDVI
+				Spectral Indices (MOD09GA, MYD09GA and VNP09GA only)
 				</div>
 				<div class="product_boxbody">
 				<div class="inputitem">
-					<input class="product custom_product" type="checkbox" id="include_sr_ndvi" name="sr_ndvi"></input>
-					<label class="tooltip" title="MODIS/VIIRS Daily NDVI" for="include_sr_ndvi">Daily SR-NDVI</label>
+					<input class="product custom_product indice_product" type="checkbox" id="include_mod_ndvi" name="mod_ndvi" />
+					<label class="tooltip" title="Terra/Aqua Surface Reflectance NDVI" for="include_mod_ndvi">MOD/MYD 09GA NDVI</label></br>
+				</div>
+				<div class="inputitem">
+					<input class="product custom_product indice_product" type="checkbox" id="include_vnp_ndvi" name="vnp_ndvi" />
+					<label class="tooltip" title="VIIRS Surface Reflectance NDVI" for="include_vnp_ndvi">VIIRS 09GA NDVI</label></br>
 				</div>
 				</div>
-			</div>
+		</div>
 
 		<h4 class="inlineb new_order_section_label">Customize Outputs</h4>
 
