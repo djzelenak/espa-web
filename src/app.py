@@ -3,6 +3,7 @@ from datetime import timedelta
 from functools import wraps
 import json
 import os
+from copy import deepcopy
 import base64
 import urlparse
 import sys
@@ -13,7 +14,7 @@ from collections import OrderedDict
 
 from flask import (Flask, request, flash, session, redirect, render_template,
                    url_for, jsonify, make_response, Response)
-from flask.ext.session import Session
+from flask_session import Session
 import memcache
 import PyRSS2Gen
 import requests
@@ -247,7 +248,7 @@ def submit_order():
             return redirect(url_for('new_order'))
 
     # create a list of requested products
-    landsat_list = [key for key in data if key in conversions['products']]
+    landsat_list = [key for key in data if key in conversions['products'] and not (key.startswith('mod') or key.startswith('vnp'))]
     # now that we have the product list, lets remove
     # this key from the form inputs
     for p in landsat_list:
@@ -287,15 +288,38 @@ def submit_order():
         # deep_update updates the dictionary
         deep_update(out_dict, tdict)
 
-    # MODIS only receive l1 or stats
+    # MODIS receives at least l1
     modis_list = ['l1']
+
+    # VIIRS receives at least l1
+    viirs_list = ['l1']
+
     if 'stats' in landsat_list:
         modis_list.append('stats')
+        viirs_list.append('stats')
+
+    modis_list_09ga = deepcopy(modis_list)
+    # include the mod/myd09ga ndvi if it was selected
+    modis_list_09ga.extend([key for key in data if key in conversions['products'] and key.startswith('mod')])
+
+    for m in modis_list_09ga:
+        if m in data: data.pop(m)
+
+    # include the vnp09ga ndvi if it was selected
+    viirs_list.extend([key for key in data if key in conversions['products'] and key.startswith('vnp')])
+
+    for v in viirs_list:
+        if v in data: data.pop(v)
 
     # Key here is usually the "sensor" name (e.g. "tm4") but can be other stuff
     for key in scene_dict_all_prods:
         if key.startswith('mod') or key.startswith('myd'):
-            scene_dict_all_prods[key]['products'] = modis_list
+            if '09ga' in key:
+                scene_dict_all_prods[key]['products'] = modis_list_09ga
+            else:
+                scene_dict_all_prods[key]['products'] = modis_list
+        elif key.startswith('vnp'):
+            scene_dict_all_prods[key]['products'] = viirs_list
         else:
             scene_dict_all_prods[key]['products'] = landsat_list
 
