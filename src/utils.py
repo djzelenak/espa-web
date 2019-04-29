@@ -112,6 +112,7 @@ conversions = {
          'reanalsrc_fp': 'Reanalysis Source FP',
          'reanalsrc_fpit': 'Reanalysis Source FPIT',
          'mod_ndvi': 'mod_ndvi',
+         'myd_ndvi': 'myd_ndvi',
          'vnp_ndvi': 'vnp_ndvi'
     }
 }
