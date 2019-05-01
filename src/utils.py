@@ -72,18 +72,18 @@ def format_messages(inmessages):
     outlist = []
     if isinstance(inmessages, dict):
         for key in inmessages:
-            outlist.append(key+"<br/>")
+            outlist.append(key+"<br>")
             if isinstance(inmessages[key], basestring):
                 outlist.append(inmessages[key])
             else:
                 for item in inmessages[key]:
-                    outlist.append("&#8594;"+item+"<br/>")
+                    outlist.append("&#8594;"+item+"<br>")
         return "".join(outlist)
     elif isinstance(inmessages, list):
         if all((isinstance(m, basestring) for m in inmessages)):
-            return "<br/>".join(inmessages)
+            return "<br>".join(inmessages)
         else:
-            return "<br/>".join(format_messages(m) for m in inmessages)
+            return "<br>".join(format_messages(m) for m in inmessages)
     else:
         return inmessages
 
@@ -110,6 +110,9 @@ conversions = {
          'reanalsrc_narr': 'Reanalysis Source NARR',
          'reanalsrc_merra2': 'Reanalysis Source MERRA2',
          'reanalsrc_fp': 'Reanalysis Source FP',
-         'reanalsrc_fpit': 'Reanalysis Source FPIT'
+         'reanalsrc_fpit': 'Reanalysis Source FPIT',
+         'mod_ndvi': 'mod_ndvi',
+         'myd_ndvi': 'myd_ndvi',
+         'vnp_ndvi': 'vnp_ndvi'
     }
 }

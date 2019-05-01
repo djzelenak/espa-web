@@ -142,7 +142,19 @@ div#output_formats label{
     margin-right:15px;
 }
 
-input#output_format {
+input#output_gtiff {
+    margin-left:15px;
+}
+
+input#output_envi {
+    margin-left:15px;
+}
+
+input#output_hdfeos2 {
+    margin-left:15px;
+}
+
+input#output_netcdf {
     margin-left:15px;
 }
 

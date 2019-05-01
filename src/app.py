@@ -3,6 +3,7 @@ from datetime import timedelta
 from functools import wraps
 import json
 import os
+from copy import deepcopy
 import base64
 import urlparse
 import sys
@@ -13,7 +14,7 @@ from collections import OrderedDict
 
 from flask import (Flask, request, flash, session, redirect, render_template,
                    url_for, jsonify, make_response, Response)
-from flask.ext.session import Session
+from flask_session import Session
 import memcache
 import PyRSS2Gen
 import requests
@@ -246,8 +247,10 @@ def submit_order():
             flash(format_messages(errors), category='error')
             return redirect(url_for('new_order'))
 
-    # create a list of requested products
-    landsat_list = [key for key in data if key in conversions['products']]
+    # create a list of requested products, but make sure not to include Modis/Viirs additional processing for landsat
+    landsat_list = [key for key in data if key in conversions['products'] and not (key.startswith('mod') or
+                                                                                   key.startswith('myd') or
+                                                                                   key.startswith('vnp'))]
     # now that we have the product list, lets remove
     # this key from the form inputs
     for p in landsat_list:
@@ -287,15 +290,38 @@ def submit_order():
         # deep_update updates the dictionary
         deep_update(out_dict, tdict)
 
-    # MODIS only receive l1 or stats
+    # MODIS receives at least l1
     modis_list = ['l1']
+
+    # VIIRS receives at least l1
+    viirs_list = ['l1']
+
     if 'stats' in landsat_list:
         modis_list.append('stats')
+        viirs_list.append('stats')
+
+    mod09ga_list = deepcopy(modis_list)
+    myd09ga_list = deepcopy(modis_list)
+    # include the mod/myd09ga ndvi if selected
+    mod09ga_list.extend([key for key in data if key in conversions['products'] and key.startswith('mod')])
+    myd09ga_list.extend([key for key in data if key in conversions['products'] and key.startswith('myd')])
+
+    # include the vnp09ga ndvi if it was selected
+    viirs_list.extend([key for key in data if key in conversions['products'] and key.startswith('vnp')])
+
+    logger.debug("our data: {}".format(data))
 
     # Key here is usually the "sensor" name (e.g. "tm4") but can be other stuff
     for key in scene_dict_all_prods:
         if key.startswith('mod') or key.startswith('myd'):
-            scene_dict_all_prods[key]['products'] = modis_list
+            if key == 'mod09ga':
+                scene_dict_all_prods[key]['products'] = mod09ga_list
+            elif key == 'myd09ga':
+                scene_dict_all_prods[key]['products'] = myd09ga_list
+            else:
+                scene_dict_all_prods[key]['products'] = modis_list
+        elif key.startswith('vnp'):
+            scene_dict_all_prods[key]['products'] = viirs_list
         else:
             scene_dict_all_prods[key]['products'] = landsat_list
 
@@ -303,7 +329,7 @@ def submit_order():
     out_dict.update(scene_dict_all_prods)
 
     # keys to clean up
-    cleankeys = ['target_projection']
+    cleankeys = ['target_projection', 'vnp_ndvi', 'mod_ndvi', 'myd_ndvi']
     for item in cleankeys:
         if item in out_dict:
             if item == 'target_projection' and out_dict[item] == 'lonlat':
