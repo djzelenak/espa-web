@@ -248,8 +248,8 @@ def submit_order():
             return redirect(url_for('new_order'))
 
     # create a list of requested products, but make sure not to include Modis/Viirs additional processing for landsat
-    landsat_list = [key for key in data if key in conversions['products'] and not (key.startswith('mod') or
-                                                                                   key.startswith('vnp'))]
+    landsat_list = [key for key in data if key in conversions['products'] and not (key.startswith('modis') or
+                                                                                   key.startswith('viirs'))]
     # now that we have the product list, lets remove
     # this key from the form inputs
     for p in landsat_list:
