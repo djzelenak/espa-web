@@ -111,8 +111,7 @@ conversions = {
          'reanalsrc_merra2': 'Reanalysis Source MERRA2',
          'reanalsrc_fp': 'Reanalysis Source FP',
          'reanalsrc_fpit': 'Reanalysis Source FPIT',
-         'mod_ndvi': 'mod_ndvi',
-         'myd_ndvi': 'myd_ndvi',
-         'vnp_ndvi': 'vnp_ndvi'
+         'modis_ndvi': 'modis_ndvi',
+         'viirs_ndvi': 'viirs_ndvi'
     }
 }

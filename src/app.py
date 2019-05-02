@@ -239,7 +239,7 @@ def submit_order():
             products = map(str, set(date_restricted.keys()) & set(data.keys()))
             unique_ids = map(str, set([u for v in date_restricted.values() for u in v]))
             if len(products):
-                remove['Missing Auxillary Data for %s' % products] = unique_ids
+                remove['Missing Auxiliary Data for %s' % products] = unique_ids
 
         errors = ['{}. Invalid IDs must be removed: {}'
                   .format(key, values) for key, values in remove.items()]
@@ -249,7 +249,6 @@ def submit_order():
 
     # create a list of requested products, but make sure not to include Modis/Viirs additional processing for landsat
     landsat_list = [key for key in data if key in conversions['products'] and not (key.startswith('mod') or
-                                                                                   key.startswith('myd') or
                                                                                    key.startswith('vnp'))]
     # now that we have the product list, lets remove
     # this key from the form inputs
@@ -257,7 +256,7 @@ def submit_order():
         data.pop(p)
 
     # scrub the 'spectral_indices' value from data
-    # used simply for toggling display of spectral indice products
+    # used simply for toggling display of spectral index products
     if 'spectral_indices' in data:
         data.pop('spectral_indices')
 
@@ -300,24 +299,21 @@ def submit_order():
         modis_list.append('stats')
         viirs_list.append('stats')
 
-    mod09ga_list = deepcopy(modis_list)
-    myd09ga_list = deepcopy(modis_list)
+    modis_daily_list = deepcopy(modis_list)
+
     # include the mod/myd09ga ndvi if selected
-    mod09ga_list.extend([key for key in data if key in conversions['products'] and key.startswith('mod')])
-    myd09ga_list.extend([key for key in data if key in conversions['products'] and key.startswith('myd')])
+    modis_daily_list.extend([key for key in data if key in conversions['products'] and key == 'modis_ndvi'])
 
     # include the vnp09ga ndvi if it was selected
-    viirs_list.extend([key for key in data if key in conversions['products'] and key.startswith('vnp')])
+    viirs_list.extend([key for key in data if key in conversions['products'] and key == 'viirs_ndvi'])
 
     logger.debug("our data: {}".format(data))
 
     # Key here is usually the "sensor" name (e.g. "tm4") but can be other stuff
     for key in scene_dict_all_prods:
         if key.startswith('mod') or key.startswith('myd'):
-            if key == 'mod09ga':
-                scene_dict_all_prods[key]['products'] = mod09ga_list
-            elif key == 'myd09ga':
-                scene_dict_all_prods[key]['products'] = myd09ga_list
+            if key == 'mod09ga' or key == 'myd09ga':
+                scene_dict_all_prods[key]['products'] = modis_daily_list
             else:
                 scene_dict_all_prods[key]['products'] = modis_list
         elif key.startswith('vnp'):
@@ -329,7 +325,7 @@ def submit_order():
     out_dict.update(scene_dict_all_prods)
 
     # keys to clean up
-    cleankeys = ['target_projection', 'vnp_ndvi', 'mod_ndvi', 'myd_ndvi']
+    cleankeys = ['target_projection', 'viirs_ndvi', 'modis_ndvi']
     for item in cleankeys:
         if item in out_dict:
             if item == 'target_projection' and out_dict[item] == 'lonlat':
