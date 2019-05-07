@@ -290,10 +290,15 @@ def submit_order():
         deep_update(out_dict, tdict)
 
     # MODIS receives at least l1
-    modis_list = ['l1']
-
+    # modis_list = ['l1']
+    modis_list = list()
     # VIIRS receives at least l1
-    viirs_list = ['l1']
+    # viirs_list = ['l1']
+    viirs_list = list()
+
+    if 'l1' in landsat_list:
+        modis_list.append('l1')
+        viirs_list.append('l1')
 
     if 'stats' in landsat_list:
         modis_list.append('stats')
