@@ -20,41 +20,69 @@
 				<th>&nbsp;</th>
 				<th>Landsat TM, ETM+, OLI/TIRS</th>
 				<th>MODIS Aqua & Terra</th>
+				{% if session['user'].is_staff %}
+				<th>S-NPP VIIRS</th>
+				{% endif %}
 			</tr>
 			<tr>
 				<th>&nbsp;</th>
 				<th>(Collection 1)</th>
-				<th>09A1/GA/GQ/Q1<br>13Q1/A1/A2/A3<br>11A1<br>(Collections 5-6)</th>
+				<th>09A1/GA/GQ/Q1<br>13Q1/A1/A2/A3<br>11A1<br>(Collection 6)</th>
+				{% if session['user'].is_staff %}
+				<th>09GA<br>(Collection 1)</th>
+				{% endif %}
 			</tr>
 			<tr>
 				<td>Input Products</td>
 				<td>X</td>
 				<td>X</td>
+				{% if session['user'].is_staff %}
+				<td>X</td>
+				{% endif %}
 			</tr>
 			<tr>
 				<td>Input Product Metadata</td>
 				<td>X</td>
 				<td>&nbsp;</td>
+				{% if session['user'].is_staff %}
+				<td>&nbsp;</td>
+				{% endif %}
 			</tr>
 			<tr>
 				<td>Level-2 Products</td>
 				<td>X</td>
 				<td>&nbsp;</td>
+				{% if session['user'].is_staff %}
+				<td>&nbsp;</td>
+				{% endif %}
 			</tr>
 			<tr>
 				<td>Spectral Indices</td>
 				<td>X</td>
+				{% if session['user'].is_staff %}
+				<td>X (09GA only)</td>
+				{% else %}
 				<td>&nbsp;</td>
+				{% endif %}
+				{% if session['user'].is_staff %}
+				<td>X (09GA only)</td>
+				{% endif %}
 			</tr>
 			<tr>
 				<td>Customized Outputs</td>
 				<td>X</td>
 				<td>X</td>
+				{% if session['user'].is_staff %}
+				<td>X</td>
+				{% endif %}
 			</tr>
 			<tr>
 				<td>Intercomparison & Statistics</td>
 				<td>X</td>
 				<td>X</td>
+				{% if session['user'].is_staff %}
+				<td>X</td>
+				{% endif %}
 			</tr>
 
 			</table>
@@ -109,73 +137,72 @@
 			<div class="product_boxbody">
 
 				<div class="inputitem">
-					<input class="product custom_product" type="checkbox" id="include_sr" name="sr"></input>
-					<label class="tooltip" title="Surface Reflectance - Not available for thermal or panchromatic bands" for="surface_reflectance">
+					<input class="product custom_product" type="checkbox" id="include_sr" name="sr"/>
+					<label class="tooltip" title="Surface Reflectance - Not available for thermal or panchromatic bands" for="include_sr">
 						Surface Reflectance - <em>Not available for thermal or panchromatic bands</em>
 					</label>
 				</div>
 
 				{% if session['user'].is_staff %}
-				        <div class="inputitem">
+				<div class="inputitem">
 					  <input type="checkbox" id="include_st" class="product" name="st">
-					  <label class="tooltip" title="Select surface temperature options" for="st">Surface Temperature</label>
+					  <label class="tooltip" title="Select surface temperature options" for="include_st">Surface Temperature</label>
 					  <div class="custom_control_options" id="st_select">
 
-					    <input class="product custom_product st_product" type="checkbox" id="stalg_single_channel" name="stalg_single_channel" value="true"></input>
+					    <input class="product custom_product st_product" type="checkbox" id="stalg_single_channel" name="stalg_single_channel" value="true"/>
 					    <label class="tooltip" title="ST Algorithm Single Channel" for="stalg_single_channel">Single Channel</label></br>
 
-                                            <div class="custom_control_options st_product" id="reanal_select">
-                                              <input class="product custom_product st_product reanal_src" type="checkbox" id="reanalsrc_narr" name="reanalsrc_narr" value="true"></input>
-                                              <label class="tooltip reanal_label" title="Reanalysis Source NARR" for="reanalsrc_narr">NARR</label>                                              
-                                              <input class="product custom_product st_product reanal_src" type="checkbox" id="reanalsrc_merra2" name="reanalsrc_merra2" value="true"></input>
-                                              <label class="tooltip reanal_label" title="Reanalysis Source MERRA-2" for="reanalsrc_merra2">MERRA-2</label>
-                                              <input class="product custom_product st_product reanal_src" type="checkbox" id="reanalsrc_fp" name="reanalsrc_fp" value="true"></input>
-                                              <label class="tooltip reanal_label" title="Reanalysis Source FP" for="reanalsrc_FP">FP</label>
-                                              <input class="product custom_product st_product reanal_src" type="checkbox" id="reanalsrc_fpit" name="reanalsrc_fpit" value="true"></input>
-                                              <label class="tooltip reanal_label" title="Reanalysis Source FPIT" for="reanalsrc_fpit">FPIT</label>
-                                            </div>
+							<div class="custom_control_options st_product" id="reanal_select">
+							  <input class="product custom_product st_product reanal_src" type="checkbox" id="reanalsrc_narr" name="reanalsrc_narr" value="true"/>
+							  <label class="tooltip reanal_label" title="Reanalysis Source NARR" for="reanalsrc_narr">NARR</label>
+							  <input class="product custom_product st_product reanal_src" type="checkbox" id="reanalsrc_merra2" name="reanalsrc_merra2" value="true"/>
+							  <label class="tooltip reanal_label" title="Reanalysis Source MERRA-2" for="reanalsrc_merra2">MERRA-2</label>
+							  <input class="product custom_product st_product reanal_src" type="checkbox" id="reanalsrc_fp" name="reanalsrc_fp" value="true"/>
+							  <label class="tooltip reanal_label" title="Reanalysis Source FP" for="reanalsrc_fp">FP</label>
+							  <input class="product custom_product st_product reanal_src" type="checkbox" id="reanalsrc_fpit" name="reanalsrc_fpit" value="true"/>
+							  <label class="tooltip reanal_label" title="Reanalysis Source FPIT" for="reanalsrc_fpit">FPIT</label>
+							</div>
 
-					    <input class="product custom_product st_product" type="checkbox" id="stalg_split_window" name="stalg_split_window"></input>
+					    <input class="product custom_product st_product" type="checkbox" id="stalg_split_window" name="stalg_split_window"/>
 					    <label class="tooltip" title="ST Algorithm Split Window" for="stalg_split_window">Split Window</label></br>
-
 					  </div>
-				        </div>
+				</div>
 
 				{% endif %}
-						
+
 				<div class="inputitem">
-					<input class="product custom_product" type="checkbox" id="include_sr_toa" name="toa"></input>
-					<label class="tooltip" title="Top of Atmosphere Reflectance " for="toa_reflectance">Top of Atmosphere Reflectance</label>
+					<input class="product custom_product" type="checkbox" id="include_sr_toa" name="toa"/>
+					<label class="tooltip" title="Top of Atmosphere Reflectance " for="include_sr_toa">Top of Atmosphere Reflectance</label>
 				</div>
 
 				<div class="inputitem">
-					<input class="product custom_product" type="checkbox" id="include_sr_thermal" name="bt"></input>
-					<label class="tooltip" title="Top of Atmosphere Brightness Temperature - Thermal band TOA processing" for="sr_thermal">
+					<input class="product custom_product" type="checkbox" id="include_sr_thermal" name="bt"/>
+					<label class="tooltip" title="Top of Atmosphere Brightness Temperature - Thermal band TOA processing" for="include_sr_thermal">
 						Brightness Temperature - <em>Thermal band TOA processing</em>
 					</label>
 				</div>
 
 				<div class="inputitem">
-					<input class="product custom_product" type="checkbox" id="include_pixel_qa" name="pixel_qa"></input>
+					<input class="product custom_product" type="checkbox" id="include_pixel_qa" name="pixel_qa"/>
 					<label class="tooltip" title="Level-2 Pixel Quality Assurance band" for="include_pixel_qa">Pixel QA</label>
 				</div>
 				<div class="inputitem">
 					<input type="checkbox" id="indices" class="product" name="spectral_indices">
-					<label class="tooltip" title="Select spectral indices for output products" for="spectral_indices">Spectral Indices</label>
+					<label class="tooltip" title="Select spectral indices for output products" for="indices">Spectral Indices</label>
 					<div class="custom_control_options" id="indices_select">
-						<input class="product custom_product indice_product" type="checkbox" id="include_sr_ndvi" name="sr_ndvi"></input>
+						<input class="product custom_product indice_product" type="checkbox" id="include_sr_ndvi" name="sr_ndvi"/>
 						<label class="tooltip" title="Normalized Difference Vegetation Index" for="include_sr_ndvi">NDVI</label></br>
-						<input class="product custom_product indice_product" type="checkbox" id="include_sr_evi" name="sr_evi"></input>
+						<input class="product custom_product indice_product" type="checkbox" id="include_sr_evi" name="sr_evi"/>
 						<label class="tooltip" title="Enhanced Vegetation Index" for="include_sr_evi">EVI</label></br>
-						<input class="product custom_product indice_product" type="checkbox" id="include_sr_savi" name="sr_savi"></input>
+						<input class="product custom_product indice_product" type="checkbox" id="include_sr_savi" name="sr_savi"/>
 						<label class="tooltip" title="Soil Adjusted Vegetation Index" for="include_sr_savi">SAVI</label></br>
-						<input class="product custom_product indice_product" type="checkbox" id="include_sr_msavi" name="sr_msavi"></input>
+						<input class="product custom_product indice_product" type="checkbox" id="include_sr_msavi" name="sr_msavi"/>
 						<label class="tooltip" title="Modified Soil Adjusted Vegetation Index" for="include_sr_msavi">MSAVI</label></br>
-						<input class="product custom_product indice_product" type="checkbox" id="include_sr_ndmi" name="sr_ndmi"></input>
+						<input class="product custom_product indice_product" type="checkbox" id="include_sr_ndmi" name="sr_ndmi"/>
 						<label class="tooltip" title="Normalized Difference Moisture Index" for="include_sr_ndmi">NDMI</label></br>
-						<input class="product custom_product indice_product" type="checkbox" id="include_sr_nbr" name="sr_nbr"></input>
+						<input class="product custom_product indice_product" type="checkbox" id="include_sr_nbr" name="sr_nbr"/>
 						<label class="tooltip" title="Normalized Burn Ratio using bands 4 &amp; 7" for="include_sr_nbr">NBR</label></br>
-						<input class="product custom_product indice_product" type="checkbox" id="include_sr_nbr2" name="sr_nbr2"></input>
+						<input class="product custom_product indice_product" type="checkbox" id="include_sr_nbr2" name="sr_nbr2"/>
 						<label class="tooltip" title="Normalized Burn Ratio using bands 5 &amp; 7" for="include_sr_nbr2">NBR2</label>
 					</div>
 				</div>
@@ -189,12 +216,30 @@
 			</div>
 			<div class="product_boxbody">
 			<div class="inputitem">
-					<input class="product custom_product" type="checkbox" id="include_dswe" name="swe"></input>
-				<label class="tooltip" title="Dynamic Surface Water Extent" for="include_dwse">Dynamic Surface Water Extent</label>
+					<input class="product custom_product" type="checkbox" id="include_dswe" name="swe"/>
+				<label class="tooltip" title="Dynamic Surface Water Extent" for="include_dswe">Dynamic Surface Water Extent</label></br>
 				</div>
 			</div>
 		</div>
 		{% endif %}
+
+	    {% if session['user'].is_staff %}
+	    <h4 class="inlineb new_order_section_label">Additional MODIS/VIIRS Processing</h4>
+
+	    <div class="product_box">
+				<div class="product_boxheader">
+				Spectral Indices (NDVI only)
+				</div>
+				<div class="product_boxbody">
+				<div class="inputitem">
+					<input class="product custom_product indice_product" type="checkbox" id="include_modis_ndvi" name="modis_ndvi" />
+					<label class="tooltip" title="MODIS Daily 500-m Surface Reflectance based NDVI" for="include_modis_ndvi">Daily MODIS NDVI</label></br>
+					<input class="product custom_product indice_product" type="checkbox" id="include_viirs_ndvi" name="viirs_ndvi" />
+					<label class="tooltip" title="VIIRS Daily 500-m Surface Reflectance based NDVI" for="include_viirs_ndvi">Daily VIIRS NDVI</label></br>
+				</div>
+				</div>
+		</div>
+	    {% endif %}
 
 		<h4 class="inlineb new_order_section_label">Customize Outputs</h4>
 
@@ -208,18 +253,18 @@
 
 			   <div class="inputitem" id="output_formats">
 				   <label class="tooltip" title="Output format for ESPA products">Output Format</label>
-				   <input type="radio" id="output_format" name="format" value="gtiff" checked="checked">GeoTiff</input>
-				   <input type="radio" id="output_format" name="format" value="envi">ENVI</input>
+				   <input type="radio" id="output_gtiff" name="format" value="gtiff" checked="checked"/><label for="output_gtiff">GeoTiff</label>
+				   <input type="radio" id="output_envi" name="format" value="envi"/><label for="output_envi">ENVI</label>
 				   <!--<input type="radio" id="output_format" name="output_format" value="envi-bip">ENVI-BIP</input>-->
-				   <input type="radio" id="output_format" name="format" value="hdf-eos2">HDF-EOS2</input>
-				   <input type="radio" id="output_format" name="format" value="netcdf">NetCDF</input>
+				   <input type="radio" id="output_hdfeos2" name="format" value="hdf-eos2"><label for="output_hdfeos2">HDF-EOS2</label>
+				   <input type="radio" id="output_netcdf" name="format" value="netcdf"><label for="output_netcdf">NetCDF</label>
 			   </div>
 
 				<div class="inputitem">
 					<input class="custom_control needs_resample_opts" type="checkbox" id="reproject" name="projection">
 					<label class="tooltip" title="Specify custom image projection for output products" for="reproject">Reproject Products</label>
 					   <div class="custom_control_options" id="reprojection">
-							<label for="projection">Projection:</label>
+							<label for="reprojection">Projection:</label>
 							<select id="select_target_projection" form="request_form">
 								<option value="aea">Albers Equal Area</option>
 								<option value="utm">Universal Transverse Mercator</option>
@@ -234,7 +279,7 @@
 
 				<div class="inputitem" id="custom_control_div">
 					<input class="custom_control" type="checkbox" id="image_extents" name="image_extents">
-					<label class="tooltip" title="Enter user defined extents for output products (minimum X,Y maximum X,Y in meters or decimal degrees)" for="include_solr_index">Modify Image Extents</label>
+					<label class="tooltip" title="Enter user defined extents for output products (minimum X,Y maximum X,Y in meters or decimal degrees)" for="image_extents">Modify Image Extents</label>
 					<div class="custom_control_options" id="scene_extents">
 						 <div class="inputitem" id="box_units">
 							 <input class="image_extents_units image_extents_units_dd" type="radio" name="image_extents|units" value="dd" />
@@ -267,7 +312,7 @@
 					<div class="custom_control_options" id="resize_options">
 						<input placeholder="30 to 5000" type="text" name="resize|pixel_size" id="pixel_size" />
 						<input type="hidden" id="pixel_size_units" name="resize|pixel_size_units" />
-						<label id="pixel_size_unit_label" form="request_form"></label>
+						<label id="pixel_size_unit_label" for="pixel_size_units"></label>
 					</div>
 				</div>
 
@@ -292,7 +337,7 @@
 			</div>
 			<div class="product_boxbody">
 				<div class="inputitem">
-					<input class="product" type="checkbox" id="include_statistics" name="plot_statistics"></input>
+					<input class="product" type="checkbox" id="include_statistics" name="plot_statistics"/>
 					<label class="tooltip" title="Generate Intercomparision Statistics and Plots" for="include_statistics">Plot Output Product Statistics</label>
 				</div>
 			</div>

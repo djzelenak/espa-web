@@ -3,6 +3,7 @@ from datetime import timedelta
 from functools import wraps
 import json
 import os
+from copy import deepcopy
 import base64
 import urlparse
 import sys
@@ -13,7 +14,7 @@ from collections import OrderedDict
 
 from flask import (Flask, request, flash, session, redirect, render_template,
                    url_for, jsonify, make_response, Response)
-from flask.ext.session import Session
+from flask_session import Session
 import memcache
 import PyRSS2Gen
 import requests
@@ -238,7 +239,7 @@ def submit_order():
             products = map(str, set(date_restricted.keys()) & set(data.keys()))
             unique_ids = map(str, set([u for v in date_restricted.values() for u in v]))
             if len(products):
-                remove['Missing Auxillary Data for %s' % products] = unique_ids
+                remove['Missing Auxiliary Data for %s' % products] = unique_ids
 
         errors = ['{}. Invalid IDs must be removed: {}'
                   .format(key, values) for key, values in remove.items()]
@@ -246,15 +247,16 @@ def submit_order():
             flash(format_messages(errors), category='error')
             return redirect(url_for('new_order'))
 
-    # create a list of requested products
-    landsat_list = [key for key in data if key in conversions['products']]
+    # create a list of requested products, but make sure not to include Modis/Viirs additional processing for landsat
+    landsat_list = [key for key in data if key in conversions['products'] and not (key.startswith('modis') or
+                                                                                   key.startswith('viirs'))]
     # now that we have the product list, lets remove
     # this key from the form inputs
     for p in landsat_list:
         data.pop(p)
 
     # scrub the 'spectral_indices' value from data
-    # used simply for toggling display of spectral indice products
+    # used simply for toggling display of spectral index products
     if 'spectral_indices' in data:
         data.pop('spectral_indices')
 
@@ -287,15 +289,40 @@ def submit_order():
         # deep_update updates the dictionary
         deep_update(out_dict, tdict)
 
-    # MODIS only receive l1 or stats
-    modis_list = ['l1']
+    # MODIS receives at least l1
+    # modis_list = ['l1']
+    modis_list = list()
+    # VIIRS receives at least l1
+    # viirs_list = ['l1']
+    viirs_list = list()
+
+    if 'l1' in landsat_list:
+        modis_list.append('l1')
+        viirs_list.append('l1')
+
     if 'stats' in landsat_list:
         modis_list.append('stats')
+        viirs_list.append('stats')
+
+    modis_daily_list = deepcopy(modis_list)
+
+    # include the mod/myd09ga ndvi if selected
+    modis_daily_list.extend([key for key in data if key in conversions['products'] and key == 'modis_ndvi'])
+
+    # include the vnp09ga ndvi if it was selected
+    viirs_list.extend([key for key in data if key in conversions['products'] and key == 'viirs_ndvi'])
+
+    logger.debug("our data: {}".format(data))
 
     # Key here is usually the "sensor" name (e.g. "tm4") but can be other stuff
     for key in scene_dict_all_prods:
         if key.startswith('mod') or key.startswith('myd'):
-            scene_dict_all_prods[key]['products'] = modis_list
+            if key == 'mod09ga' or key == 'myd09ga':
+                scene_dict_all_prods[key]['products'] = modis_daily_list
+            else:
+                scene_dict_all_prods[key]['products'] = modis_list
+        elif key.startswith('vnp'):
+            scene_dict_all_prods[key]['products'] = viirs_list
         else:
             scene_dict_all_prods[key]['products'] = landsat_list
 
@@ -303,7 +330,7 @@ def submit_order():
     out_dict.update(scene_dict_all_prods)
 
     # keys to clean up
-    cleankeys = ['target_projection']
+    cleankeys = ['target_projection', 'viirs_ndvi', 'modis_ndvi']
     for item in cleankeys:
         if item in out_dict:
             if item == 'target_projection' and out_dict[item] == 'lonlat':
