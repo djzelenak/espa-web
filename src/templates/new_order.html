@@ -145,6 +145,15 @@
 
 				{% if session['user'].is_staff %}
 				<div class="inputitem">
+					<input type="checkbox" id="include_orca" class="product custom_product" name="orca">
+					<label class="tooltip" title="Over-water Reflectance - Only Available for Landsat 8" for="include_orca">
+						Over-water Reflectance - <em>Only Available for Landsat 8</em>
+					</label>
+				</div>
+				{% endif %}
+
+				{% if session['user'].is_staff %}
+				<div class="inputitem">
 					  <input type="checkbox" id="include_st" class="product" name="st">
 					  <label class="tooltip" title="Select surface temperature options" for="include_st">Surface Temperature</label>
 					  <div class="custom_control_options" id="st_select">
@@ -167,7 +176,6 @@
 					    <label class="tooltip" title="ST Algorithm Split Window" for="stalg_split_window">Split Window</label></br>
 					  </div>
 				</div>
-
 				{% endif %}
 
 				<div class="inputitem">
