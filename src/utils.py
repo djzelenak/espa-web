@@ -105,6 +105,7 @@ conversions = {
          'toa': 'top of atmosphere',
          'stats': 'plots and statistics',
          'sr_ndvi': 'sr_ndvi',
+         'orca': 'over-water reflectance',
          'stalg_split_window': 'Split Window ST',
          'stalg_single_channel': 'Single Channel ST',
          'reanalsrc_narr': 'Reanalysis Source NARR',
