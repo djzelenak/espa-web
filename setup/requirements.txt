@@ -1,12 +1,12 @@
-Flask==0.12.3
-Flask-Login==0.3.2
-Flask-Session
-Flask-HTTPAuth
+Flask==1.1.1
+Flask-Login==0.4.1
+Flask-Session==0.3.1
+Flask-HTTPAuth==3.3.0
 itsdangerous==0.24
 Jinja2==2.10.1
 MarkupSafe==0.23
 requests==2.20.0
-Werkzeug==0.11.4
+Werkzeug==0.15.5
 wheel==0.26.0
 python-memcached==1.57
 nose2
