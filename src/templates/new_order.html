@@ -20,69 +20,49 @@
 				<th>&nbsp;</th>
 				<th>Landsat TM, ETM+, OLI/TIRS</th>
 				<th>MODIS Aqua & Terra</th>
-				{% if session['user'].is_staff %}
 				<th>S-NPP VIIRS</th>
-				{% endif %}
 			</tr>
 			<tr>
 				<th>&nbsp;</th>
 				<th>(Collection 1)</th>
 				<th>09A1/GA/GQ/Q1<br>13Q1/A1/A2/A3<br>11A1<br>(Collection 6)</th>
-				{% if session['user'].is_staff %}
 				<th>09GA<br>(Collection 1)</th>
-				{% endif %}
 			</tr>
 			<tr>
 				<td>Input Products</td>
 				<td>X</td>
 				<td>X</td>
-				{% if session['user'].is_staff %}
 				<td>X</td>
-				{% endif %}
 			</tr>
 			<tr>
 				<td>Input Product Metadata</td>
 				<td>X</td>
 				<td>&nbsp;</td>
-				{% if session['user'].is_staff %}
 				<td>&nbsp;</td>
-				{% endif %}
 			</tr>
 			<tr>
 				<td>Level-2 Products</td>
 				<td>X</td>
 				<td>&nbsp;</td>
-				{% if session['user'].is_staff %}
 				<td>&nbsp;</td>
-				{% endif %}
 			</tr>
 			<tr>
 				<td>Spectral Indices</td>
 				<td>X</td>
-				{% if session['user'].is_staff %}
 				<td>X (09GA only)</td>
-				{% else %}
-				<td>&nbsp;</td>
-				{% endif %}
-				{% if session['user'].is_staff %}
 				<td>X (09GA only)</td>
-				{% endif %}
 			</tr>
 			<tr>
 				<td>Customized Outputs</td>
 				<td>X</td>
 				<td>X</td>
-				{% if session['user'].is_staff %}
 				<td>X</td>
-				{% endif %}
 			</tr>
 			<tr>
 				<td>Intercomparison & Statistics</td>
 				<td>X</td>
 				<td>X</td>
-				{% if session['user'].is_staff %}
 				<td>X</td>
-				{% endif %}
 			</tr>
 
 			</table>
@@ -231,7 +211,6 @@
 		</div>
 		{% endif %}
 
-	    {% if session['user'].is_staff %}
 	    <h4 class="inlineb new_order_section_label">Additional MODIS/VIIRS Processing</h4>
 
 	    <div class="product_box">
@@ -241,13 +220,12 @@
 				<div class="product_boxbody">
 				<div class="inputitem">
 					<input class="product custom_product indice_product" type="checkbox" id="include_modis_ndvi" name="modis_ndvi" />
-					<label class="tooltip" title="MODIS Daily 500-m Surface Reflectance based NDVI" for="include_modis_ndvi">Daily MODIS NDVI</label></br>
+					<label class="tooltip" title="NDVI derived from MODIS Daily 500-m SR" for="include_modis_ndvi">MODIS Daily 500-m NDVI</label></br>
 					<input class="product custom_product indice_product" type="checkbox" id="include_viirs_ndvi" name="viirs_ndvi" />
-					<label class="tooltip" title="VIIRS Daily 500-m Surface Reflectance based NDVI" for="include_viirs_ndvi">Daily VIIRS NDVI</label></br>
+					<label class="tooltip" title="NDVI derived from VIIRS Daily 500-m SR" for="include_viirs_ndvi">VIIRS Daily 500-m NDVI</label></br>
 				</div>
 				</div>
 		</div>
-	    {% endif %}
 
 		<h4 class="inlineb new_order_section_label">Customize Outputs</h4>
 
