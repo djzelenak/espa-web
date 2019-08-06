@@ -143,14 +143,12 @@
 					</label>
 				</div>
 
-				{% if session['user'].is_staff %}
 				<div class="inputitem">
 					<input type="checkbox" id="include_orca" class="product custom_product" name="orca">
 					<label class="tooltip" title="Over-water Reflectance - Only Available for Landsat 8" for="include_orca">
 						Over-water Reflectance - <em>Only Available for Landsat 8</em>
 					</label>
 				</div>
-				{% endif %}
 
 				{% if session['user'].is_staff %}
 				<div class="inputitem">
