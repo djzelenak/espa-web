@@ -308,6 +308,8 @@ def submit_order():
     if 'l1' in landsat_list:
         modis_list.append('l1')
         viirs_list.append('l1')
+        # Not for now
+        # sentinel_list.append('l1')
 
     if 'stats' in landsat_list:
         modis_list.append('stats')
@@ -333,7 +335,7 @@ def submit_order():
                 scene_dict_all_prods[key]['products'] = modis_list
         elif key.startswith('vnp'):
             scene_dict_all_prods[key]['products'] = viirs_list
-        elif key.startswith('sentinel'):
+        elif key.startswith('s2'):
             scene_dict_all_prods[key]['products'] = sentinel_list
         else:
             scene_dict_all_prods[key]['products'] = landsat_list
