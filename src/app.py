@@ -205,6 +205,12 @@ def submit_order():
     data = request.form.to_dict()
     logger.info("* new order submission for user %s\n\n order details: %s\n\n\n" % (session['user'].username, data))
     _external = False
+
+    # TEMP S2 NOTES
+    # s2_sr: on
+    # s2_spectral_indices: on
+    # s2_ndvi: on
+
     try:
         # grab sceneids from the file in input_product_list field
         _ipl_list = request.files.get('input_product_list').read().splitlines()
@@ -220,6 +226,7 @@ def submit_order():
     try:
         # convert our list of sceneids into format required for new orders
         scene_dict_all_prods = api_up("/available-products", json={'inputs': _ipl})
+        logger.info("* available products - {}".format(scene_dict_all_prods))
     except UnicodeDecodeError as e:
         flash('Decoding Error with input file. Please check input file encoding', 'error')
         logger.info("problem with order submission for user %s\n\n message: %s\n\n" % (session['user'].username,
@@ -262,7 +269,7 @@ def submit_order():
 
     # scrub the 'spectral_indices' value from data
     # used simply for toggling display of spectral index products
-    if 'spectral_indices' in data :
+    if 'spectral_indices' in data:
         data.pop('spectral_indices')
     if 's2_spectral_indices' in data:
         data.pop('s2_spectral_indices')
@@ -324,10 +331,13 @@ def submit_order():
     # include the vnp09ga ndvi if it was selected
     viirs_list.extend([key for key in data if key in conversions['products'] and key == 'viirs_ndvi'])
 
+    sentinel_list.extend([key for key in data if key in conversions['products'] and key.startswith('s2')])
+    logger.debug('sentinel list: {}'.format(sentinel_list))
     logger.debug("our data: {}".format(data))
 
     # Key here is usually the "sensor" name (e.g. "tm4") but can be other stuff
     for key in scene_dict_all_prods:
+        logger.info('key {} in scene_dict_all_prods'.format(key))
         if key.startswith('mod') or key.startswith('myd'):
             if key == 'mod09ga' or key == 'myd09ga':
                 scene_dict_all_prods[key]['products'] = modis_daily_list
@@ -335,7 +345,8 @@ def submit_order():
                 scene_dict_all_prods[key]['products'] = modis_list
         elif key.startswith('vnp'):
             scene_dict_all_prods[key]['products'] = viirs_list
-        elif key.startswith('s2'):
+        elif key == 'sentinel':
+            logger.info('found sentinel key!')
             scene_dict_all_prods[key]['products'] = sentinel_list
         else:
             scene_dict_all_prods[key]['products'] = landsat_list
