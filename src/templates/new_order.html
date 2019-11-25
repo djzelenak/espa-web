@@ -19,78 +19,75 @@
 			<tr>
 				<th>&nbsp;</th>
 				<th>Landsat TM, ETM+, OLI/TIRS</th>
-				<th>Sentinel-2 A, B</th>
-				<th>MODIS Aqua & Terra</th>
 				{% if session['user'].is_staff %}
-				<th>S-NPP VIIRS</th>
+				<th>Sentinel-2 A, B</th>
 				{% endif %}
+				<th>MODIS Aqua & Terra</th>
+				<th>S-NPP VIIRS</th>
 			</tr>
 			<tr>
 				<th>&nbsp;</th>
 				<th>(Collection 1)</th>
-				<th>MSI L1C</th>
-				<th>09A1/GA/GQ/Q1<br>13Q1/A1/A2/A3<br>11A1<br>(Collection 6)</th>
 				{% if session['user'].is_staff %}
-				<th>09GA<br>(Collection 1)</th>
+				<th>MSI L1C</th>
 				{% endif %}
+				<th>09A1/GA/GQ/Q1<br>13Q1/A1/A2/A3<br>11A1<br>(Collection 6)</th>
+				<th>09GA<br>(Collection 1)</th>
 			</tr>
 			<tr>
 				<td>Input Products</td>
 				<td>X</td>
-				<td>&nbsp;</td>
-				<td>X</td>
 				{% if session['user'].is_staff %}
-				<td>X</td>
+				<td>&nbsp;</td>
 				{% endif %}
+				<td>X</td>
+				<td>X</td>
 			</tr>
 			<tr>
 				<td>Input Product Metadata</td>
 				<td>X</td>
-				<td>&nbsp;</td>
-			    <td>&nbsp;</td>
 				{% if session['user'].is_staff %}
 				<td>&nbsp;</td>
 				{% endif %}
+			    <td>&nbsp;</td>
+				<td>&nbsp;</td>
 			</tr>
 			<tr>
 				<td>Level-2 Products</td>
 				<td>X</td>
-				<td>X</td>
-				<td>&nbsp;</td>
 				{% if session['user'].is_staff %}
-				<td>&nbsp;</td>
+				<td>X</td>
 				{% endif %}
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
 			</tr>
 			<tr>
 				<td>Spectral Indices</td>
 				<td>X</td>
+				{% if session['user'].is_staff %}
 				<td>X</td>
-				{% if session['user'].is_staff %}
+				{% endif %}
 				<td>X (09GA only)</td>
-				{% else %}
 				<td>&nbsp;</td>
-				{% endif %}
-				{% if session['user'].is_staff %}
 				<td>X (09GA only)</td>
-				{% endif %}
 			</tr>
 			<tr>
 				<td>Customized Outputs</td>
 				<td>X</td>
-				<td>X</td>
-				<td>X</td>
 				{% if session['user'].is_staff %}
 				<td>X</td>
 				{% endif %}
+				<td>X</td>
+				<td>X</td>
 			</tr>
 			<tr>
 				<td>Intercomparison & Statistics</td>
 				<td>X</td>
-				<td>X</td>
-				<td>X</td>
 				{% if session['user'].is_staff %}
 				<td>X</td>
 				{% endif %}
+				<td>X</td>
+				<td>X</td>
 			</tr>
 
 			</table>
@@ -239,7 +236,8 @@
 		</div>
 		{% endif %}
 
-		<h4 class="inlineb new_order_section_label">Sentinel-2 Processing</h4>
+	  {% if session['user'].is_staff %}
+	  <h4 class="inlineb new_order_section_label">Sentinel-2 Processing</h4>
 
 	  	<div class="product_box">
 			<div class="product_boxheader">
@@ -273,8 +271,8 @@
 				</div>
 			</div>
 		</div>
+	    {% endif %}
 
-	    {% if session['user'].is_staff %}
 	    <h4 class="inlineb new_order_section_label">Additional MODIS/VIIRS Processing</h4>
 
 	    <div class="product_box">
@@ -290,7 +288,6 @@
 				</div>
 				</div>
 		</div>
-	    {% endif %}
 
 		<h4 class="inlineb new_order_section_label">Customize Outputs</h4>
 
