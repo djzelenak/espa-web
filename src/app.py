@@ -205,6 +205,12 @@ def submit_order():
     data = request.form.to_dict()
     logger.info("* new order submission for user %s\n\n order details: %s\n\n\n" % (session['user'].username, data))
     _external = False
+
+    # TEMP S2 NOTES
+    # s2_sr: on
+    # s2_spectral_indices: on
+    # s2_ndvi: on
+
     try:
         # grab sceneids from the file in input_product_list field
         _ipl_list = request.files.get('input_product_list').read().splitlines()
@@ -220,6 +226,7 @@ def submit_order():
     try:
         # convert our list of sceneids into format required for new orders
         scene_dict_all_prods = api_up("/available-products", json={'inputs': _ipl})
+        logger.info("* available products - {}".format(scene_dict_all_prods))
     except UnicodeDecodeError as e:
         flash('Decoding Error with input file. Please check input file encoding', 'error')
         logger.info("problem with order submission for user %s\n\n message: %s\n\n" % (session['user'].username,
@@ -247,9 +254,14 @@ def submit_order():
             flash(format_messages(errors), category='error')
             return redirect(url_for('new_order'))
 
-    # create a list of requested products, but make sure not to include Modis/Viirs additional processing for landsat
-    landsat_list = [key for key in data if key in conversions['products'] and not (key.startswith('modis') or
-                                                                                   key.startswith('viirs'))]
+    # create a list of requested products, but make sure not to include Modis, Viirs, or Sentinel
+    # with requested additional processing for landsat
+    landsat_list = list()
+    for key in data:
+        if key in conversions['products']:
+            if 'modis_' not in key and 'viirs_' not in key and 's2_' not in key:
+                landsat_list.append(key)
+
     # now that we have the product list, lets remove
     # this key from the form inputs
     for p in landsat_list:
@@ -259,6 +271,8 @@ def submit_order():
     # used simply for toggling display of spectral index products
     if 'spectral_indices' in data:
         data.pop('spectral_indices')
+    if 's2_spectral_indices' in data:
+        data.pop('s2_spectral_indices')
 
     # the image extents parameters also come in under
     # this key in the form, and this causes a conflict
@@ -296,13 +310,18 @@ def submit_order():
     # viirs_list = ['l1']
     viirs_list = list()
 
+    sentinel_list = list()
+
     if 'l1' in landsat_list:
         modis_list.append('l1')
         viirs_list.append('l1')
+        # Not for now
+        # sentinel_list.append('l1')
 
     if 'stats' in landsat_list:
         modis_list.append('stats')
         viirs_list.append('stats')
+        sentinel_list.append('stats')
 
     modis_daily_list = deepcopy(modis_list)
 
@@ -312,10 +331,13 @@ def submit_order():
     # include the vnp09ga ndvi if it was selected
     viirs_list.extend([key for key in data if key in conversions['products'] and key == 'viirs_ndvi'])
 
+    sentinel_list.extend([key for key in data if key in conversions['products'] and key.startswith('s2')])
+    logger.debug('sentinel list: {}'.format(sentinel_list))
     logger.debug("our data: {}".format(data))
 
     # Key here is usually the "sensor" name (e.g. "tm4") but can be other stuff
     for key in scene_dict_all_prods:
+        logger.info('key {} in scene_dict_all_prods'.format(key))
         if key.startswith('mod') or key.startswith('myd'):
             if key == 'mod09ga' or key == 'myd09ga':
                 scene_dict_all_prods[key]['products'] = modis_daily_list
@@ -323,6 +345,9 @@ def submit_order():
                 scene_dict_all_prods[key]['products'] = modis_list
         elif key.startswith('vnp'):
             scene_dict_all_prods[key]['products'] = viirs_list
+        elif key == 'sentinel':
+            logger.info('found sentinel key!')
+            scene_dict_all_prods[key]['products'] = sentinel_list
         else:
             scene_dict_all_prods[key]['products'] = landsat_list
 
@@ -330,7 +355,15 @@ def submit_order():
     out_dict.update(scene_dict_all_prods)
 
     # keys to clean up
-    cleankeys = ['target_projection', 'viirs_ndvi', 'modis_ndvi']
+    cleankeys = ['target_projection', 'viirs_ndvi', 'modis_ndvi',
+                 's2_sr',
+                 's2_ndvi',
+                 's2_msavi',
+                 's2_evi',
+                 's2_savi',
+                 's2_ndmi',
+                 's2_nbr',
+                 's2_nbr2']
     for item in cleankeys:
         if item in out_dict:
             if item == 'target_projection' and out_dict[item] == 'lonlat':
@@ -459,7 +492,7 @@ def view_order(orderid):
     scenes = map(lambda x: Scene(**x), item_status)
 
     statuses = {'complete': ['complete', 'unavailable'],
-                'open': ['oncache', 'queued', 'processing', 'error', 'submitted'],
+                'open': ['oncache', 'tasked', 'scheduled', 'processing', 'error', 'submitted'],
                 'waiting': ['retry', 'onorder'],
                 'error': ['error']}
 
@@ -635,4 +668,3 @@ if __name__ == '__main__':
     if 'ESPA_DEBUG' in os.environ and os.environ['ESPA_DEBUG'] == 'True':
         debug = True
     espaweb.run(debug=debug, use_evalex=False, host='0.0.0.0', port=8889)
-
