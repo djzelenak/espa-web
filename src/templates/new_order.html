@@ -49,7 +49,7 @@
 				{% if session['user'].is_staff %}
 				<td>&nbsp;</td>
 				{% endif %}
-			    <td>&nbsp;</td>
+				<td>&nbsp;</td>
 				<td>&nbsp;</td>
 			</tr>
 			<tr>
@@ -280,10 +280,10 @@
 				</div>
 				<div class="product_boxbody">
 				<div class="inputitem">
-					<input class="product custom_product daac_indice_product" type="checkbox" id="include_modis_ndvi" name="modis_ndvi" />
-					<label class="tooltip" title="MODIS Daily 500-m Surface Reflectance based NDVI" for="include_modis_ndvi">Daily MODIS NDVI</label></br>
-					<input class="product custom_product daac_indice_product" type="checkbox" id="include_viirs_ndvi" name="viirs_ndvi" />
-					<label class="tooltip" title="VIIRS Daily 500-m Surface Reflectance based NDVI" for="include_viirs_ndvi">Daily VIIRS NDVI</label></br>
+					<input class="product custom_product indice_product" type="checkbox" id="include_modis_ndvi" name="modis_ndvi" />
+					<label class="tooltip" title="NDVI derived from MODIS Daily 500-m SR" for="include_modis_ndvi">MODIS Daily 500-m NDVI</label></br>
+					<input class="product custom_product indice_product" type="checkbox" id="include_viirs_ndvi" name="viirs_ndvi" />
+					<label class="tooltip" title="NDVI derived from VIIRS Daily 500-m SR" for="include_viirs_ndvi">VIIRS Daily 500-m NDVI</label></br>
 				</div>
 				</div>
 		</div>
