@@ -5,7 +5,7 @@ from mock import patch
 from mock import MagicMock
 
 from flask import request
-from StringIO import StringIO
+from io import StringIO, BytesIO
 from src.app import espaweb
 from src.mocks import app as mock_app
 from src.utils import User
@@ -16,7 +16,7 @@ class ApplicationTestCase(unittest.TestCase):
     def setUp(self):
         self.app = espaweb.test_client()
         self.app.testing = True
-        self.default_sceneid = 'LE70270292003144EDC00'
+        self.default_sceneid = b'LE70270292003144EDC00'
         self.form_order = mock_app.form_order
 
         user_parms = {'email': 'foo@gmail.com',
@@ -27,7 +27,7 @@ class ApplicationTestCase(unittest.TestCase):
         self.user = User(**user_parms)
 
         with espaweb.test_client() as c:
-            c.set_cookie('usgs.gov', 'EROS_SSO_None_secure', 'TestingTesting')
+            c.set_cookie('usgs.gov', 'EROS_SSO_None_secure', b'TestingTesting')
             with c.session_transaction() as sess:
                 sess['logged_in'] = True
                 sess['user'] = self.user
@@ -41,21 +41,21 @@ class ApplicationTestCase(unittest.TestCase):
 
     def test_login_get_fail(self):
         result = self.app.get('/login')
-        self.assertIn('404: Not Found', result.data)
+        self.assertIn('404: Not Found', result.data.decode('utf-8'))
 
     def test_index_get_public(self):
         result = self.app.get('/index/')
         self.assertEqual(result.status_code, 200)
-        self.assertIn('Login', result.data)
+        self.assertIn('Login', result.data.decode('utf-8'))
         
     def test_index_get_cookie(self):
         result = self.client.get('/index/')
         self.assertEqual(result.status_code, 200)
-        self.assertIn('Logout', result.data)
+        self.assertIn('Logout', result.data.decode('utf-8'))
 
     def test_get_index(self):
         result = self.client.get('/index/')
-        self.assertIn("<title>ESPA - LSRD</title>", result.data)
+        self.assertIn("<title>ESPA - LSRD</title>", result.data.decode('utf-8'))
         self.assertEqual(result.status_code, 200)
 
     @patch('src.app.api_up', mock_app.api_up_user)
@@ -63,7 +63,7 @@ class ApplicationTestCase(unittest.TestCase):
     def test_get_logout(self):
         result = self.client.get('/logout')
         # results in a redirect to the home page
-        self.assertIn(">/index/</a>", result.data)
+        self.assertIn(">/index/</a>", result.data.decode('utf-8'))
         self.assertEqual(result.status_code, 302)
         self.assertIn('index', result.headers['Location'])
         # login by setting the ERS SSO cookie
@@ -72,47 +72,48 @@ class ApplicationTestCase(unittest.TestCase):
             sess['stat_backlog_depth'] = 1000
         # cookie-based login will set user session if login required
         result = self.client.get('/ordering/new/')
-        self.assertIn('Total Product Backlog: 1000', result.data)
+        self.assertIn('Total Product Backlog: 1000', result.data.decode('utf-8'))
         self.assertEqual(result.status_code, 200)
 
     def test_get_new_order(self):
         result = self.client.get("/ordering/new/")
-        self.assertIn("<p>New Bulk Order</p>", result.data)
+        self.assertIn("<p>New Bulk Order</p>", result.data.decode('utf-8'))
         self.assertEqual(result.status_code, 200)
 
     @patch('src.app.api_up', mock_app.api_post_order)
     def test_submit_order_post_success(self):
         data = self.form_order
-        data['input_product_list'] = (StringIO(self.default_sceneid), 'in.txt')
+        #data['input_product_list'] = (BytesIO(self.default_sceneid), b'in.txt')
+        data['input_product_list'] = (self.default_sceneid, 'in.txt')
         result = self.client.post("/ordering/submit/",
                                   content_type='multipart/form-data',
                                   data=data)
-        self.assertIn("/ordering/order-status/bob@google.com-03072016-085432/", result.data)
+        self.assertIn("/ordering/order-status/bob@google.com-03072016-085432/", str(result.data))
         self.assertEqual(result.status_code, 302)
 
     @patch('src.app.api_up', mock_app.api_up_list_orders)
     def test_get_list_orders(self):
         result = self.client.get("/ordering/status/")
         title = "<title>ESPA -  Orders for {} </title>".format(self.user.email)
-        self.assertIn(title, result.data)
+        self.assertIn(title, result.data.decode('utf-8'))
         self.assertEqual(result.status_code, 200)
 
     @patch('src.app.api_up', mock_app.api_up_order_status)
     def test_get_view_order(self):
         result = self.client.get("/ordering/order-status/bob@google.com-12345-9876/")
-        self.assertIn("Details for: bob@google.com-12345-9876", result.data)
+        self.assertIn("Details for: bob@google.com-12345-9876", result.data.decode('utf-8'))
         self.assertEqual(result.status_code, 200)
 
     @patch('src.app.api_up', mock_app.api_up_reports)
     def test_get_list_reports_admin_only(self):
         result = self.client.get("/reports/")
-        self.assertIn('index', result.data)
+        self.assertIn('index', result.data.decode('utf-8'))
         self.assertEqual(result.status_code, 302)
 
     @patch('src.app.api_up', mock_app.api_up_rss_feed)
     def test_get_rss_feed(self):
         result = self.client.get("/ordering/status/bob@gmail.com/rss/")
-        self.assertEquals(result.status_code, 200)
+        self.assertEqual(result.status_code, 200)
 
 
 

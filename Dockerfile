@@ -1,4 +1,4 @@
-FROM python:2.7
+FROM python:3.6
 
 RUN mkdir -p /home/espadev/espa-web
 WORKDIR /home/espadev/espa-web

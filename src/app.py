@@ -5,7 +5,7 @@ import json
 import os
 from copy import deepcopy
 import base64
-import urlparse
+import urllib.parse
 import sys
 import traceback
 # OrderedDict is returned by the API reports (see `eval(response)` below)
@@ -19,9 +19,9 @@ import memcache
 import PyRSS2Gen
 import requests
 
-from utils import (conversions, deep_update, is_num, gen_nested_dict, User,
+from .utils import (conversions, deep_update, is_num, gen_nested_dict, User,
                    format_messages, Order, Scene)
-from logger import ilogger as logger
+from .logger import ilogger as logger
 
 
 memcache_hosts = os.getenv('ESPA_MEMCACHE_HOST', '127.0.0.1:11211').split(',')
@@ -187,7 +187,7 @@ def index():
         # originally requested destination
         destination = request.args.get('next')
         if destination and destination != 'None':
-            return redirect(urlparse.urlparse(destination).path)
+            return redirect(urllib.parse.urlparse(destination).path)
 
     return render_template('index.html')
 
@@ -216,7 +216,7 @@ def submit_order():
         _ipl_list = request.files.get('input_product_list').read().splitlines()
         _ipl = [i.strip().split("/r") for i in _ipl_list]
         _ipl = [item for sublist in _ipl for item in sublist if item]
-    except AttributeError, e:
+    except AttributeError as e:
         # must be coming from new_external_order
         _ipl_list = data.pop('input_product_list')
         _ipl = _ipl_list.split(",")
@@ -243,13 +243,13 @@ def submit_order():
 
         date_restricted = scene_dict_all_prods.pop('date_restricted', None)
         if date_restricted:
-            products = map(str, set(date_restricted.keys()) & set(data.keys()))
-            unique_ids = map(str, set([u for v in date_restricted.values() for u in v]))
+            products = list(map(str, set(date_restricted.keys()) & set(data.keys())))
+            unique_ids = list(map(str, set([u for v in list(date_restricted.values()) for u in v])))
             if len(products):
                 remove['Missing Auxiliary Data for %s' % products] = unique_ids
 
         errors = ['{}. Invalid IDs must be removed: {}'
-                  .format(key, values) for key, values in remove.items()]
+                  .format(key, values) for key, values in list(remove.items())]
         if errors:
             flash(format_messages(errors), category='error')
             return redirect(url_for('new_order'))
@@ -284,18 +284,18 @@ def submit_order():
             # 'image_extents', 'projection', 'resize'
             # are in data.keys().  if there are child
             # keys, remove k
-            if "{}|".format(k) in " ".join(data.keys()):
+            if "{}|".format(k) in " ".join(list(data.keys())):
                 data.pop(k)
         else:
             # project, resize, image_extents are not there
             # so remove their children
-            for key in data.keys():
+            for key in list(data.keys()):
                 if k in key:
                     data.pop(key)
 
     # this dictionary will hold the output
     out_dict = {}
-    for k, v in data.iteritems():
+    for k, v in list(data.items()):
         # all values coming in from the post request
         # are unicode, convert those values which
         # should be int or float
@@ -414,7 +414,7 @@ def list_orders(email=None):
         order = api_up('/order/{}'.format(orderid))
         item_status = api_up('/item-status/{}'.format(orderid))
         item_status = item_status.get(orderid, {})
-        item_status = map(lambda x: Scene(**x), item_status)
+        item_status = [Scene(**x) for x in item_status]
         count_ordered = len(item_status)
         count_complete = len([s for s in item_status if s.status == 'complete'])
         count_error = len([s for s in item_status if s.status == 'error'])
@@ -450,7 +450,7 @@ def list_orders_feed(email):
     for orderid in orders:
         item_status = api_up('/item-status/{}'.format(orderid), uauth=uauth)
         item_status = item_status.get(orderid, {})
-        item_status = map(lambda x: Scene(**x), item_status)
+        item_status = [Scene(**x) for x in item_status]
         order_info = api_up('/order/{}'.format(orderid), uauth=uauth)
         order_items[orderid] = dict(scenes=item_status,
                                     orderdate=order_info['order_date'])
@@ -465,7 +465,7 @@ def list_orders_feed(email):
         items=[]
     )
 
-    for orderid, order in order_items.items():
+    for orderid, order in list(order_items.items()):
         for scene in order['scenes']:
             if scene.status != 'complete':
                 continue
@@ -489,7 +489,7 @@ def view_order(orderid):
     order_dict = Order(**api_up("/order/{}".format(orderid)))
     item_status = api_up('/item-status/{}'.format(orderid))
     item_status = item_status.get(orderid, {})
-    scenes = map(lambda x: Scene(**x), item_status)
+    scenes = [Scene(**x) for x in item_status]
 
     statuses = {'complete': ['complete', 'unavailable'],
                 'open': ['oncache', 'tasked', 'scheduled', 'processing', 'error', 'submitted'],
@@ -560,8 +560,8 @@ def show_report(name):
     # occassionally see UnicodeDecodeError in reports
     # lets decode the response
     for rpt in res_data:
-      for k,v in rpt.items():
-        rpt[k] = str(v).decode('utf8', 'strict')
+      for k,v in list(rpt.items()):
+        rpt[k] = str(v) #.decode('utf8', 'strict')
     return render_template('report.html', report_name=name, report=res_data)
 
 
@@ -579,7 +579,7 @@ def admin_console():
 
     # Data gaps appearing in 2016, only one data source for L8
     now = datetime.datetime.now()
-    years = range(now.year, now.year+1)
+    years = list(range(now.year, now.year+1))
 
     gap_dict = {'L8': {'lads': {}}, 'L17': {'toms': {}, 'ncep': {}}}
     for key in ['toms', 'ncep', 'lads']:

@@ -58,22 +58,22 @@ def update_status_details_true():
 
 
 def api_up_reports(*args):
-    return {u'backlog_input_product_types':
-                {u'query': u'',
-                 u'display_name': u'Backlog - Input Types',
-                 u'description': u'Input product type counts'},
-            u'product_counts':
-                {u'query': u'',
-                 u'display_name': u'Products - Counts',
-                 u'description': u'Active product totals per user'},
-            u'order_counts':
-                {u'query': u'',
-                 u'display_name': u'Orders - Counts',
-                 u'description': u'Orders and status per user'},
-            u'scheduling_next_up':
-                {u'query': u'',
-                 u'display_name': u'Scheduling - Next Up',
-                 u'description': u'Shows products that will be scheduled to run next'}
+    return {'backlog_input_product_types':
+                {'query': '',
+                 'display_name': 'Backlog - Input Types',
+                 'description': 'Input product type counts'},
+            'product_counts':
+                {'query': '',
+                 'display_name': 'Products - Counts',
+                 'description': 'Active product totals per user'},
+            'order_counts':
+                {'query': '',
+                 'display_name': 'Orders - Counts',
+                 'description': 'Orders and status per user'},
+            'scheduling_next_up':
+                {'query': '',
+                 'display_name': 'Scheduling - Next Up',
+                 'description': 'Shows products that will be scheduled to run next'}
             }
 
 
@@ -85,16 +85,16 @@ def api_up_stats_all(*args):
 
 
 def api_up_show_report(*args):
-    return "[OrderedDict([('Total Orders', 11L), " \
-           "('Complete', 1L), ('Open', 10L), ('Email', 'cgaustin@usgs.gov'), " \
+    return "[OrderedDict([('Total Orders', 11), " \
+           "('Complete', 1), ('Open', 10), ('Email', 'cgaustin@usgs.gov'), " \
            "('First Name', 'clay'), ('Last Name', 'austin')]), " \
-           "OrderedDict([('Total Orders', 4L), ('Complete', 0L), ('Open', 4L), " \
+           "OrderedDict([('Total Orders', 4), ('Complete', 0), ('Open', 2), " \
            "('Email', 'klsmith@usgs.gov'), ('First Name', 'Kelcy'), ('Last Name', 'Smith')]), " \
-           "OrderedDict([('Total Orders', 2L), ('Complete', 0L), ('Open', 2L), " \
+           "OrderedDict([('Total Orders', 2), ('Complete', 0), ('Open', 2), " \
            "('Email', 'dhill@usgs.gov'), ('First Name', 'David'), ('Last Name', 'Hill')]), " \
-           "OrderedDict([('Total Orders', 2L), ('Complete', 0L), ('Open', 2L), " \
+           "OrderedDict([('Total Orders', 2), ('Complete', 0), ('Open', 2), " \
            "('Email', 'dhill@usgs.gov'), ('First Name', ''), ('Last Name', '')]), " \
-           "OrderedDict([('Total Orders', 1L), ('Complete', 0L), ('Open', 1L), " \
+           "OrderedDict([('Total Orders', 1), ('Complete', 0), ('Open', 1), " \
            "('Email', 'rdilley@usgs.gov'), ('First Name', 'Ron'), ('Last Name', 'Dilley')])]"
 
 

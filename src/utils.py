@@ -3,7 +3,7 @@ import collections
 
 class APIObject(object):
     def __init__(self, **kwargs):
-        for k, v in kwargs.iteritems():
+        for k, v in kwargs.items():
             self.__setattr__(k, v)
 
     def __repr__(self):
@@ -38,7 +38,7 @@ def deep_update(source, overrides):
     :param overrides: values to override
     :return: updated source
     """
-    for key, value in overrides.iteritems():
+    for key, value in overrides.items():
         if isinstance(value, collections.Mapping) and value:
             returned = deep_update(source.get(key, {}), value)
             source[key] = returned
@@ -73,14 +73,14 @@ def format_messages(inmessages):
     if isinstance(inmessages, dict):
         for key in inmessages:
             outlist.append(key+"<br>")
-            if isinstance(inmessages[key], basestring):
+            if isinstance(inmessages[key], str):
                 outlist.append(inmessages[key])
             else:
                 for item in inmessages[key]:
                     outlist.append("&#8594;"+item+"<br>")
         return "".join(outlist)
     elif isinstance(inmessages, list):
-        if all((isinstance(m, basestring) for m in inmessages)):
+        if all((isinstance(m, str) for m in inmessages)):
             return "<br>".join(inmessages)
         else:
             return "<br>".join(format_messages(m) for m in inmessages)
