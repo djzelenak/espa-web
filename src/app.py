@@ -206,11 +206,6 @@ def submit_order():
     logger.info("* new order submission for user %s\n\n order details: %s\n\n\n" % (session['user'].username, data))
     _external = False
 
-    # TEMP S2 NOTES
-    # s2_sr: on
-    # s2_spectral_indices: on
-    # s2_ndvi: on
-
     try:
         # grab sceneids from the file in input_product_list field
         _ipl_list = request.files.get('input_product_list').read().splitlines()
@@ -662,6 +657,7 @@ def internal_error(e):
 def apply_xframe_options(response):
     response.headers['X-Frame-Options'] = 'DENY'
     return response
+
 
 if __name__ == '__main__':
     debug = False

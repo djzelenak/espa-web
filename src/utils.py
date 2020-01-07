@@ -87,6 +87,7 @@ def format_messages(inmessages):
     else:
         return inmessages
 
+
 conversions = {
     'products': {
          'l1': 'original input products',
@@ -105,7 +106,7 @@ conversions = {
          'toa': 'top of atmosphere',
          'stats': 'plots and statistics',
          'sr_ndvi': 'sr_ndvi',
-         'orca': 'over-water reflectance',
+         'aq_refl': 'aquatic reflectance',
          'stalg_split_window': 'Split Window ST',
          'stalg_single_channel': 'Single Channel ST',
          'reanalsrc_narr': 'Reanalysis Source NARR',
