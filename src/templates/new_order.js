@@ -27,6 +27,8 @@ var reproject_div = "#reprojection";
 
 var indices = "#indices";
 var indices_div = "#indices_select";
+var s2_indices = "#s2_indices";
+var s2_indices_div = "#s2_indices_select";
 
 var st = "#include_st";
 var st_div = "#st_select";
@@ -238,6 +240,18 @@ $(document).ready(function(){
         } else {
             $(indices_div).hide();
             $(".indice_product").prop('checked', false);
+        }
+   });
+
+   /*******************************************************************
+       Event handler to deal with s2 spectral indices selection
+   *******************************************************************/
+   $(s2_indices).change(function(item) {
+        if ( $(this).is(":checked") ) {
+            $(s2_indices_div).show();
+        } else {
+            $(s2_indices_div).hide();
+            $(".s2_indice_product").prop('checked', false);
         }
    });
 

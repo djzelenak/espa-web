@@ -113,6 +113,14 @@ conversions = {
          'reanalsrc_fp': 'Reanalysis Source FP',
          'reanalsrc_fpit': 'Reanalysis Source FPIT',
          'modis_ndvi': 'modis_ndvi',
-         'viirs_ndvi': 'viirs_ndvi'
+         'viirs_ndvi': 'viirs_ndvi',
+         's2_sr': 'sentinel-2 surface reflectance',
+         's2_ndvi': 'sentinel-2 sr ndvi',
+         's2_msavi': 'sentinel-2 sr msavi',
+         's2_savi': 'sentinel-2 sr savi',
+         's2_evi': 'sentinel-2 sr evi',
+         's2_ndmi': 'sentinel-2 sr ndmi',
+         's2_nbr': 'sentinel-2 sr nbr',
+         's2_nbr2': 'sentinel-2 sr nbr2'
     }
 }

@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block style %}
-    th.product, td.product {width:250px;}
+    th.product, td.product {width:305px; word-wrap:break-word;}
     th.status,  td.status {width:100px;}
     th.purl, td.purl {width:100px;}
     th.cksum, td.cksum {width:100px;}
@@ -141,9 +141,8 @@
                 JSON message body for the <a href="https://github.com/USGS-EROS/espa-api#user-api">espa-api</a>:<br><br>
                 <pre id="order_json"></pre>
             </div>
-
             <div class="boxbody">
-                <table>
+                <table style="table-layout: fixed; width: 100%">
                     <tbody>
                        <tr class='header_row'>
                           <th class='header_row product noborder'>Product</th>
