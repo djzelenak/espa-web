@@ -19,9 +19,9 @@ import memcache
 import PyRSS2Gen
 import requests
 
-from .utils import (conversions, deep_update, is_num, gen_nested_dict, User,
+from utils import (conversions, deep_update, is_num, gen_nested_dict, User,
                    format_messages, Order, Scene)
-from .logger import ilogger as logger
+from logger import ilogger as logger
 
 
 memcache_hosts = os.getenv('ESPA_MEMCACHE_HOST', '127.0.0.1:11211').split(',')
@@ -214,7 +214,7 @@ def submit_order():
     try:
         # grab sceneids from the file in input_product_list field
         _ipl_list = request.files.get('input_product_list').read().splitlines()
-        _ipl = [i.strip().split("/r") for i in _ipl_list]
+        _ipl = [i.decode('utf-8').strip().split("/r") for i in _ipl_list]
         _ipl = [item for sublist in _ipl for item in sublist if item]
     except AttributeError as e:
         # must be coming from new_external_order

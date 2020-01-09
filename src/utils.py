@@ -3,7 +3,7 @@ import collections
 
 class APIObject(object):
     def __init__(self, **kwargs):
-        for k, v in kwargs.items():
+        for k, v in list(kwargs.items()):
             self.__setattr__(k, v)
 
     def __repr__(self):
@@ -38,7 +38,7 @@ def deep_update(source, overrides):
     :param overrides: values to override
     :return: updated source
     """
-    for key, value in overrides.items():
+    for key, value in list(overrides.items()):
         if isinstance(value, collections.Mapping) and value:
             returned = deep_update(source.get(key, {}), value)
             source[key] = returned
