@@ -19,9 +19,9 @@ import memcache
 import PyRSS2Gen
 import requests
 
-from utils import (conversions, deep_update, is_num, gen_nested_dict, User,
+from .utils import (conversions, deep_update, is_num, gen_nested_dict, User,
                    format_messages, Order, Scene)
-from logger import ilogger as logger
+from .logger import ilogger as logger
 
 
 memcache_hosts = os.getenv('ESPA_MEMCACHE_HOST', '127.0.0.1:11211').split(',')
