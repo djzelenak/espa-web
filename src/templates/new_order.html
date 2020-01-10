@@ -19,72 +19,56 @@
 			<tr>
 				<th>&nbsp;</th>
 				<th>Landsat TM, ETM+, OLI/TIRS</th>
-				{% if session['user'].is_staff %}
 				<th>Sentinel-2 A, B</th>
-				{% endif %}
 				<th>MODIS Aqua & Terra</th>
 				<th>S-NPP VIIRS</th>
 			</tr>
 			<tr>
 				<th>&nbsp;</th>
 				<th>(Collection 1)</th>
-				{% if session['user'].is_staff %}
 				<th>MSI L1C</th>
-				{% endif %}
 				<th>09A1/GA/GQ/Q1<br>13Q1/A1/A2/A3<br>11A1<br>(Collection 6)</th>
 				<th>09GA<br>(Collection 1)</th>
 			</tr>
 			<tr>
 				<td>Input Products</td>
 				<td>X</td>
-				{% if session['user'].is_staff %}
 				<td>&nbsp;</td>
-				{% endif %}
 				<td>X</td>
 				<td>X</td>
 			</tr>
 			<tr>
 				<td>Input Product Metadata</td>
 				<td>X</td>
-				{% if session['user'].is_staff %}
 				<td>&nbsp;</td>
-				{% endif %}
 				<td>&nbsp;</td>
 				<td>&nbsp;</td>
 			</tr>
 			<tr>
 				<td>Level-2 Products</td>
 				<td>X</td>
-				{% if session['user'].is_staff %}
 				<td>X</td>
-				{% endif %}
 				<td>&nbsp;</td>
 				<td>&nbsp;</td>
 			</tr>
 			<tr>
 				<td>Spectral Indices</td>
 				<td>X</td>
-				{% if session['user'].is_staff %}
 				<td>X</td>
-				{% endif %}
 				<td>X (09GA only)</td>
 				<td>X (09GA only)</td>
 			</tr>
 			<tr>
 				<td>Customized Outputs</td>
 				<td>X</td>
-				{% if session['user'].is_staff %}
 				<td>X</td>
-				{% endif %}
 				<td>X</td>
 				<td>X</td>
 			</tr>
 			<tr>
 				<td>Intercomparison & Statistics</td>
 				<td>X</td>
-				{% if session['user'].is_staff %}
 				<td>X</td>
-				{% endif %}
 				<td>X</td>
 				<td>X</td>
 			</tr>
@@ -147,14 +131,12 @@
 					</label>
 				</div>
 
-				{% if session['user'].is_staff %}
 				<div class="inputitem">
-					<input type="checkbox" id="include_orca" class="product custom_product" name="orca">
-					<label class="tooltip" title="Over-water Reflectance - Only Available for Landsat 8" for="include_orca">
-						Over-water Reflectance - <em>Only Available for Landsat 8</em>
+					<input type="checkbox" id="include_aq_refl" class="product custom_product" name="aq_refl">
+					<label class="tooltip" title="Aquatic Reflectance - Only Available for Landsat 8" for="include_aq_refl">
+						Aquatic Reflectance - <em>Only Available for Landsat 8</em>
 					</label>
 				</div>
-				{% endif %}
 
 				{% if session['user'].is_staff %}
 				<div class="inputitem">
@@ -235,7 +217,6 @@
 		</div>
 		{% endif %}
 
-	  {% if session['user'].is_staff %}
 	  <h4 class="inlineb new_order_section_label">Sentinel-2 Processing</h4>
 
 	  	<div class="product_box">
@@ -270,7 +251,6 @@
 				</div>
 			</div>
 		</div>
-	    {% endif %}
 
 	    <h4 class="inlineb new_order_section_label">Additional MODIS/VIIRS Processing</h4>
 
